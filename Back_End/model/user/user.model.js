@@ -1,39 +1,22 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema(
   {
-    firstName: {
-      required: true,
+    userName: {
       type: String,
-    },
-    lastName: {
       required: true,
-      type: String,
+      unique: true,
     },
     profilePhoto: {
       type: String,
       default:
         "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png",
     },
-    email: {
-      type: String,
-      required: true,
-    },
-    bio: {
-      type: String,
-    },
     password: {
       type: String,
       required: true,
-    },
-    postCount: {
-      type: Number,
-      default: 0,
-    },
-    isBlocked: {
-      type: Boolean,
-      default: false,
     },
     isAdmin: {
       type: Boolean,
@@ -41,47 +24,37 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["Admin", "Guest", "Blogger"],
+      enum: ["admin", "student", "parent", "teacher", "backOffice"],
     },
-    isFollowing: {
-      type: Boolean,
-      default: false,
-    },
-    isUnFollowing: {
-      type: Boolean,
-      default: false,
-    },
-    isAccountVerified: {
-      type: Boolean,
-      default: false,
-    },
-    accountVerificationToken: {
-      type: String,
-    },
-    accountVerificationTokenExpires: {
-      type: Date,
-    },
-    viewedBy: {
+    student: {
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          ref: "Student",
         },
       ],
     },
-    followers: {
+    parent: {
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          ref: "Parent",
         },
       ],
     },
-    following: {
+    teacher: {
       type: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
+          ref: "teacher",
+        },
+      ],
+    },
+    backOffice: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "BackOffice",
         },
       ],
     },
@@ -90,25 +63,30 @@ const UserSchema = new mongoose.Schema(
     passwordResetTokenExpires: Date,
     active: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   {
-    toJSON: {
-      virtuals: true,
-    },
-    toObject: {
-      virtuals: true,
-    },
     timestamps: true,
   }
 );
 
+//Hash password
 UserSchema.pre("save", async function (next) {
   const user = this;
   if (!user.isModified("password")) return next();
-
   user.password = await bcrypt.hash(user.password, 8);
+  next();
 });
+
+//Match password
+UserSchema.methods.isPasswordMatched = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+//Generate token
+UserSchema.methods.isGenerateToken = async function (userId) {
+  return jwt.sign({ userId }, process.env.JWT_KEY, { expiresIn: "1d" });
+};
 
 module.exports = mongoose.model("User", UserSchema);
