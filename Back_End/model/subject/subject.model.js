@@ -18,18 +18,6 @@ const SubjectSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  classes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Class",
-    },
-  ],
-  teachers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Teacher",
-    },
-  ],
   isActive: {
     type: Boolean,
     default: true,

@@ -30,10 +30,12 @@ const TeacherSchema = new mongoose.Schema(
     nic: {
       type: Number,
       required: true,
+      unique: true,
     },
     mobileNumber: {
       type: Number,
       required: true,
+      unique: true,
     },
     landPhoneNumber: {
       type: Number,
@@ -57,19 +59,13 @@ const TeacherSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    subjects: [
+    timetable: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Subject",
+        ref: "Timetable",
       },
     ],
-    classes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Class",
-      },
-    ],
-    active: {
+    isActive: {
       type: Boolean,
       default: true,
     },

@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const TimeTableSchema = new mongoose.Schema(
+const TimetableSchema = new mongoose.Schema(
   {
     day: {
       type: String,
       required: true,
-      enum: ["monday", ""],
+      enum: ["monday", "tuesday", "wednesday", "thursday", "friday"],
     },
     classRoom: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +24,7 @@ const TimeTableSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teacher",
     },
-    active: {
+    isActive: {
       type: Boolean,
       default: true,
     },
@@ -32,4 +32,4 @@ const TimeTableSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("TimeTable", TimeTableSchema);
+module.exports = mongoose.model("Timetable", TimetableSchema);

@@ -10,6 +10,7 @@ const {
   updateParent,
   updateParentStatus,
   deleteParent,
+  fetchChildrenByParent,
 } = require("../../controller/parent/parent.controller");
 const parentRouter = express.Router();
 
@@ -23,6 +24,7 @@ parentRouter
   .get(authMiddleware, fetchParentDetail)
   .patch(authMiddleware, updateParent)
   .delete(authMiddleware, authAdmin, deleteParent);
+parentRouter.route("/children/:id").get(authMiddleware, fetchChildrenByParent);
 
 parentRouter.route("/status/:id").patch(authMiddleware, updateParentStatus);
 

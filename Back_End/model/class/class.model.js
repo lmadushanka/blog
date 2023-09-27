@@ -15,18 +15,6 @@ const ClassSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    subjects: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Subject",
-      },
-    ],
-    teachers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Teacher",
-      },
-    ],
     isActive: {
       type: Boolean,
       default: true,

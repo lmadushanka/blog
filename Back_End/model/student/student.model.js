@@ -45,7 +45,7 @@ const StudentSchema = new mongoose.Schema(
     nic: {
       type: String,
     },
-    active: {
+    isActive: {
       type: Boolean,
       default: true,
     },

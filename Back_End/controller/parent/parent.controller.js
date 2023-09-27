@@ -1,4 +1,5 @@
 const Parent = require("../../model/parent/parent.model");
+const Class = require("../../model/class/class.model");
 const { StatusCodes } = require("http-status-codes");
 const validateMongodbId = require("../../utils/validateMongodbID");
 const {
@@ -161,6 +162,25 @@ const deleteParent = async (req, res) => {
   return res.status(StatusCodes.Ok).json(deletedParent);
 };
 
+//--------------------------------------------------
+//Fetch children by parent
+//--------------------------------------------------
+const fetchChildrenByParent = async (req, res) => {
+  const { id } = req.params;
+
+  validateMongodbId(id);
+
+  const parent = await Parent.findById(id).populate({
+    path: "children",
+    select: ["fullName", "shortName", "gender", "dob", "nic"],
+    populate: { path: "classRoom", select: ["grade", "section"] },
+  });
+
+  if (!parent) throw new NotFoundError(`Cannot find any parent by id: ${id}`);
+
+  return res.status(StatusCodes.OK).json(parent.children);
+};
+
 module.exports = {
   registerParent,
   fetchAllParent,
@@ -168,4 +188,5 @@ module.exports = {
   updateParent,
   updateParentStatus,
   deleteParent,
+  fetchChildrenByParent,
 };
