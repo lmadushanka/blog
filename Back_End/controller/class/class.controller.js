@@ -7,9 +7,9 @@ const {
   UnAuthenticatedError,
 } = require("../../errors/index");
 
-//--------------------------------------------------
-//Create class
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Create class
+//!--------------------------------------------------
 const createClass = async (req, res) => {
   const { classNumber, grade, section } = req.body;
 
@@ -30,18 +30,18 @@ const createClass = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(createdClass);
 };
 
-//--------------------------------------------------
-//Fetch all classes
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch all classes
+//!--------------------------------------------------
 const fetchAllClasses = async (req, res) => {
   const classes = await Class.find({}).sort({ grade: +1, section: +1 });
 
   return res.status(StatusCodes.OK).json(classes);
 };
 
-//--------------------------------------------------
-//Fetch class details
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch class details
+//!--------------------------------------------------
 const fetchClassDetails = async (req, res) => {
   const { id } = req.params;
 
@@ -57,9 +57,9 @@ const fetchClassDetails = async (req, res) => {
   return res.status(StatusCodes.Ok).json(classRoom);
 };
 
-//--------------------------------------------------
-//Update class room
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update class room
+//!--------------------------------------------------
 const updateClass = async (req, res) => {
   const { id } = req.params;
   const { grade, section } = req.body;
@@ -90,9 +90,9 @@ const updateClass = async (req, res) => {
   return res.status(StatusCodes.OK).json(updatedClassRoom);
 };
 
-//--------------------------------------------------
-//Update class room status
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update class room status
+//!--------------------------------------------------
 const updateClassStatus = async (req, res) => {
   const { id } = req.params;
   const { isActive } = req.body;
@@ -114,9 +114,9 @@ const updateClassStatus = async (req, res) => {
   return res.status(StatusCodes.OK).json(updatedClassRoom);
 };
 
-//--------------------------------------------------
-//Delete class room
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Delete class room
+//!--------------------------------------------------
 const deleteClass = async (req, res) => {
   const { id } = req.params;
 
@@ -132,9 +132,9 @@ const deleteClass = async (req, res) => {
   return res.status(StatusCodes.OK).json(deletedClassRoom);
 };
 
-//--------------------------------------------------
-//Fetch class rooms by grade
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch class rooms by grade
+//!--------------------------------------------------
 const fetchClassRoomsByGrade = async (req, res) => {
   const { grade } = req.params;
 

@@ -11,9 +11,9 @@ const {
   UnAuthenticatedError,
 } = require("../../errors/index");
 
-//--------------------------------------------------
-//Create timetable
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Create timetable
+//!--------------------------------------------------
 const createTimetable = async (req, res) => {
   const { day, classRoom, period, subject, teacher } = req.body;
 
@@ -53,18 +53,18 @@ const createTimetable = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(timetable);
 };
 
-//--------------------------------------------------
-//Fetch all timetable
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch all timetable
+//!--------------------------------------------------
 const fetchAllTimetable = async (req, res) => {
   const timetables = await Timetable.find({});
 
   return res.status(StatusCodes.OK).json(timetables);
 };
 
-//--------------------------------------------------
-//Fetch timetable details
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch timetable details
+//!--------------------------------------------------
 const fetchTimetableDetails = async (req, res) => {
   const { id } = req.params;
 
@@ -81,9 +81,9 @@ const fetchTimetableDetails = async (req, res) => {
   return res.status(StatusCodes.OK).json(timetable);
 };
 
-//--------------------------------------------------
-//Fetch timetable by class
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch timetable by class
+//!--------------------------------------------------
 const fetchTimetableByClass = async (req, res) => {
   const { classId } = req.params;
 
@@ -101,9 +101,9 @@ const fetchTimetableByClass = async (req, res) => {
   return res.status(StatusCodes.OK).json(timetable);
 };
 
-//--------------------------------------------------
-//Update timetable
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update timetable
+//!--------------------------------------------------
 const updateTimetable = async (req, res) => {
   const { id } = req.params;
 
@@ -146,9 +146,9 @@ const updateTimetable = async (req, res) => {
   return res.status(StatusCodes.OK).json(updatedTimetable);
 };
 
-//--------------------------------------------------
-//Fetch student timetable
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch student timetable
+//!--------------------------------------------------
 const fetchStudentTimetable = async (req, res) => {
   const { classId } = req.params;
 
@@ -168,9 +168,9 @@ const fetchStudentTimetable = async (req, res) => {
   return res.status(StatusCodes.OK).json(timetable);
 };
 
-//--------------------------------------------------
-//Fetch teacher timetable
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch teacher timetable
+//!--------------------------------------------------
 const fetchTeacherTimetable = async (req, res) => {
   const { teacherId } = req.params;
 

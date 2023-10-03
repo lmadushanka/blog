@@ -7,9 +7,9 @@ const {
   UnAuthenticatedError,
 } = require("../../errors/index");
 
-//--------------------------------------------------
-//Register
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Register
+//!--------------------------------------------------
 const userRegisterController = async (req, res) => {
   const { userName, password, role, student, parent, teacher, backOffice } =
     req.body;
@@ -38,9 +38,9 @@ const userRegisterController = async (req, res) => {
   });
 };
 
-//--------------------------------------------------
-//Login user
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Login user
+//!--------------------------------------------------
 const loginUserController = async (req, res) => {
   const { userName, password } = req?.body;
 
@@ -74,18 +74,18 @@ const loginUserController = async (req, res) => {
   });
 };
 
-//--------------------------------------------------
-//Get All Users
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Get All Users
+//!--------------------------------------------------
 const getAllUsersController = async (req, res) => {
   const user = await User.find({});
 
   return res.status(StatusCodes.OK).json({ user });
 };
 
-//--------------------------------------------------
-//Delete user
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Delete user
+//!--------------------------------------------------
 const deleteUserController = async (req, res) => {
   const { id } = req.params;
 
@@ -100,9 +100,9 @@ const deleteUserController = async (req, res) => {
   res.status(StatusCodes.OK).json(deletedUser);
 };
 
-//--------------------------------------------------
-//Get user details
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Get user details
+//!--------------------------------------------------
 const getUserDetailsController = async (req, res) => {
   const { id } = req.params;
 
@@ -121,9 +121,9 @@ const getUserDetailsController = async (req, res) => {
   res.status(StatusCodes.OK).json(userDetails);
 };
 
-//--------------------------------------------------
-//User profile
-//--------------------------------------------------
+//!--------------------------------------------------
+//! User profile
+//!--------------------------------------------------
 const userProfileController = async (req, res) => {
   const { id } = req.params;
 
@@ -142,9 +142,9 @@ const userProfileController = async (req, res) => {
   res.status(StatusCodes.OK).json(profile);
 };
 
-//--------------------------------------------------
-//Update user profile
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update user profile
+//!--------------------------------------------------
 const updateUserProfileController = async (req, res) => {
   const { id } = req.params;
 
@@ -168,9 +168,9 @@ const updateUserProfileController = async (req, res) => {
   res.status(StatusCodes.OK).json(updatedProfile);
 };
 
-//--------------------------------------------------
-//Update password
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update password
+//!--------------------------------------------------
 const updatePasswordController = async (req, res) => {
   const { id } = req.params;
 

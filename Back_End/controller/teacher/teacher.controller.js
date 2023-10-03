@@ -10,9 +10,9 @@ const {
   UnAuthenticatedError,
 } = require("../../errors/index");
 
-//--------------------------------------------------
-//Register student
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Register student
+//!--------------------------------------------------
 const registerTeacher = async (req, res) => {
   const {
     registerNumber,
@@ -69,18 +69,18 @@ const registerTeacher = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(teacher);
 };
 
-//--------------------------------------------------
-//Fetch all teachers
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch all teachers
+//!--------------------------------------------------
 const fetchAllTeachers = async (req, res) => {
   const teachers = await Teacher.find({});
 
   return res.status(StatusCodes.OK).json(teachers);
 };
 
-//--------------------------------------------------
-//Fetch teacher details
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch teacher details
+//!--------------------------------------------------
 const fetchTeacherDetails = async (req, res) => {
   const { id } = req.params;
 
@@ -101,9 +101,9 @@ const fetchTeacherDetails = async (req, res) => {
   return res.status(StatusCodes.OK).json(teacher);
 };
 
-//--------------------------------------------------
-//Update teacher
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update teacher
+//!--------------------------------------------------
 const updateTeacher = async (req, res) => {
   const { id } = req.params;
 
@@ -165,9 +165,9 @@ const updateTeacher = async (req, res) => {
   return res.status(StatusCodes.OK).json(teacher);
 };
 
-//--------------------------------------------------
-//Update teacher status
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update teacher status
+//!--------------------------------------------------
 const updateTeacherStatus = async (req, res) => {
   const { id, isActive } = req.params;
 
@@ -186,9 +186,9 @@ const updateTeacherStatus = async (req, res) => {
   return res.status(StatusCodes.OK).json(teacher);
 };
 
-//--------------------------------------------------
-//Delete Teacher
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Delete Teacher
+//!--------------------------------------------------
 const deleteTeacher = async (req, res) => {
   const { id } = req.params;
   //Check if valid objectId

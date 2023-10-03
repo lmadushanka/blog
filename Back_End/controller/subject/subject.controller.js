@@ -8,9 +8,9 @@ const {
 } = require("../../errors/index");
 const { isValidObjectId } = require("mongoose");
 
-//--------------------------------------------------
-//Create subject
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Create subject
+//!--------------------------------------------------
 const createSubject = async (req, res) => {
   const { subjectNumber, name, sinhala, english } = req.body;
 
@@ -33,18 +33,18 @@ const createSubject = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(createdSubject);
 };
 
-//--------------------------------------------------
-//Fetch all subject
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch all subject
+//!--------------------------------------------------
 const fetchAllSubject = async (req, res) => {
   const subjects = await Subject.find({});
 
   return res.status(StatusCodes.OK).json(subjects);
 };
 
-//--------------------------------------------------
-//Fetch subject details
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch subject details
+//!--------------------------------------------------
 const fetchSubjectDetails = async (req, res) => {
   const { id } = req.params;
 
@@ -59,9 +59,9 @@ const fetchSubjectDetails = async (req, res) => {
   return res.status(StatusCodes.OK).json(subject);
 };
 
-//--------------------------------------------------
-//Fetch subjects by language
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch subjects by language
+//!--------------------------------------------------
 const fetchSubjectsByLanguage = async (req, res) => {
   const { language } = req.params;
 
@@ -76,9 +76,9 @@ const fetchSubjectsByLanguage = async (req, res) => {
   res.status(StatusCodes.OK).json(subject);
 };
 
-//--------------------------------------------------
-//Update subjects
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update subjects
+//!--------------------------------------------------
 const updateSubject = async (req, res) => {
   const { subjectNumber, name, sinhala, english } = req.body;
 
@@ -103,9 +103,9 @@ const updateSubject = async (req, res) => {
   return res.status(StatusCodes.OK).json(subject);
 };
 
-//--------------------------------------------------
-//Update subjects status
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update subjects status
+//!--------------------------------------------------
 const updateSubjectStatus = async (req, res) => {
   const { isActive } = req.body;
   const { id } = req.params;
@@ -122,9 +122,9 @@ const updateSubjectStatus = async (req, res) => {
   return res.status(StatusCodes.OK).json(subject);
 };
 
-//--------------------------------------------------
-//Delete subjects
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Delete subjects
+//!--------------------------------------------------
 const deleteSubject = async (req, res) => {
   const { id } = req.params;
 

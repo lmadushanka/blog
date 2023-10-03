@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Student = require("../../model/student/student.model");
 const Parent = require("../../model/parent/parent.model");
 const Class = require("../../model/class/class.model");
@@ -6,12 +7,12 @@ const validateMongodbId = require("../../utils/validateMongodbID");
 const {
   BadRequestError,
   NotFoundError,
-  UnAuthenticatedError,
+  ServerError,
 } = require("../../errors/index");
 
-//--------------------------------------------------
-//Register student
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Register student
+//!--------------------------------------------------
 const registerStudent = async (req, res) => {
   const {
     registerNumber,
@@ -48,37 +49,54 @@ const registerStudent = async (req, res) => {
   if (!foundClassRoom)
     throw new NotFoundError(`Cannot find any classRoom by id: ${classRoom}`);
 
-  const student = await Student.create({
-    registerNumber,
-    fullName,
-    shortName,
-    classRoom,
-    parent,
-    gender,
-    dob,
-    enrolmentDate,
-    nic,
-  });
+  const session = mongoose.startSession();
 
-  foundParent.children.addToSet(student);
+  try {
+    await session.startTransaction();
 
-  foundParent.save();
+    const student = await Student.create(
+      {
+        registerNumber,
+        fullName,
+        shortName,
+        classRoom,
+        parent,
+        gender,
+        dob,
+        enrolmentDate,
+        nic,
+      },
+      { session }
+    );
 
-  return res.status(StatusCodes.CREATED).json(student);
+    await Parent.updateOne(
+      { _id: parent },
+      { $addToSet: { children: student } },
+      { session }
+    );
+
+    await session.commitTransaction();
+
+    return res.status(StatusCodes.CREATED).json(student);
+  } catch (error) {
+    throw new ServerError(`Some thing went wrong please try again`);
+  } finally {
+    await session.endSession();
+  }
 };
 
-//--------------------------------------------------
-//Fetch all student
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch all student
+//!--------------------------------------------------
 const fetchAllStudent = async (req, res) => {
   const StudentSchema = await Student.find({});
 
   return res.status(StatusCodes.OK).json(StudentSchema);
 };
 
-//--------------------------------------------------
-//Fetch student details
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch student details
+//!--------------------------------------------------
 const fetchStudentDetail = async (req, res) => {
   const { id } = req.params;
 
@@ -103,9 +121,9 @@ const fetchStudentDetail = async (req, res) => {
   return res.status(StatusCodes.OK).json(student);
 };
 
-//--------------------------------------------------
-//Fetch student by classRoom
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Fetch student by classRoom
+//!--------------------------------------------------
 const fetchStudentByClass = async (req, res) => {
   const { classId } = req.params;
 
@@ -121,9 +139,9 @@ const fetchStudentByClass = async (req, res) => {
   return res.status(StatusCodes.OK).json(students);
 };
 
-//--------------------------------------------------
-//Update student
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update student
+//!--------------------------------------------------
 const updateStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -172,38 +190,55 @@ const updateStudent = async (req, res) => {
   //Find the student
   const student = await Student.findById(id);
 
-  //Remove children information if change parent
-  if (student.parent != parent) {
-    await Parent.updateMany(
-      { _id: student.parent },
-      { $pull: { children: { $in: [student._id] } } }
+  const session = mongoose.startSession();
+
+  try {
+    await session.startTransaction();
+    //Remove children information if change parent
+
+    if (student.parent != parent) {
+      await Parent.updateMany(
+        { _id: student.parent },
+        { $pull: { children: { $in: [student._id] } } },
+        { session }
+      );
+    }
+
+    //Add student to parent children record
+    await Parent.updateOne(
+      { _id: parent },
+      { $addToSet: { children: student } },
+      { session }
     );
+
+    //Update student
+    const updatedStudent = await Student.findByIdAndUpdate(
+      id,
+      {
+        registerNumber,
+        fullName,
+        shortName,
+        classRoom,
+        parent,
+        gender,
+        dob,
+        enrolmentDate,
+        nic,
+      },
+      { session }
+    );
+
+    res.status(StatusCodes.OK).json(updatedStudent);
+  } catch (error) {
+    throw new ServerError(`Some thing went wrong please try again`);
+  } finally {
+    await session.endSession();
   }
-
-  //Add student to parent children record
-  foundParent.children.addToSet(student);
-
-  foundParent.save();
-
-  //Update student
-  const updatedStudent = await Student.findByIdAndUpdate(id, {
-    registerNumber,
-    fullName,
-    shortName,
-    classRoom,
-    parent,
-    gender,
-    dob,
-    enrolmentDate,
-    nic,
-  });
-
-  res.status(StatusCodes.OK).json(updatedStudent);
 };
 
-//--------------------------------------------------
-//Delete student
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Delete student
+//!--------------------------------------------------
 const deleteStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -223,9 +258,9 @@ const deleteStudent = async (req, res) => {
   return res.status(StatusCodes.OK).json(deletedStudent);
 };
 
-//--------------------------------------------------
-//Update student status
-//--------------------------------------------------
+//!--------------------------------------------------
+//! Update student status
+//!--------------------------------------------------
 const updateStudentStatus = async (req, res) => {
   const { isActive } = req.body;
 
